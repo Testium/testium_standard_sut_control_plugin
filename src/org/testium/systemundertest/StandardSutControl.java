@@ -5,10 +5,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 import org.testium.configuration.SutControlConfiguration;
 import org.testtoolinterfaces.testresult.SutInfo;
+import org.testtoolinterfaces.testresult.TestStepResult;
+import org.testtoolinterfaces.testresult.TestResult.VERDICT;
+import org.testtoolinterfaces.testsuite.Parameter;
+import org.testtoolinterfaces.testsuite.ParameterArrayList;
+import org.testtoolinterfaces.testsuite.TestSuiteException;
+import org.testtoolinterfaces.testsuite.TestStepCommand;
+import org.testtoolinterfaces.testsuite.TestStep.StepType;
 import org.testtoolinterfaces.utils.RunTimeData;
 import org.testtoolinterfaces.utils.RunTimeVariable;
 import org.testtoolinterfaces.utils.StreamGobbler;
@@ -24,69 +30,79 @@ public class StandardSutControl extends SutControl
 {
 	private SutControlConfiguration myConfig;
 	
-	private ArrayList<SutIfCommand> myCommands;
 	private GetVersionSutCommand myGetVersionCmd;
 	private GetVersionLongSutCommand myGetVersionLongCmd;
 	
 	public StandardSutControl( SutControlConfiguration aConfig )
 	{
 		super();
-		Trace.println(Trace.LEVEL.CONSTRUCTOR);
-		
+		Trace.println(Trace.CONSTRUCTOR);
+
 		myConfig = aConfig;
 		
 		StartSutCommand startCmd = new StartSutCommand( myConfig );
 		StopSutCommand stopCmd = new StopSutCommand( myConfig );
-		RestartSutCommand restartCmd = new RestartSutCommand( myConfig, startCmd, stopCmd );
 		myGetVersionCmd = new GetVersionSutCommand( myConfig );
 		myGetVersionLongCmd = new GetVersionLongSutCommand( myConfig );
 		
-		myCommands = new ArrayList<SutIfCommand>();
-		myCommands.add(startCmd);
-		myCommands.add(stopCmd);
-		myCommands.add(restartCmd);
-		myCommands.add(myGetVersionCmd);
-		myCommands.add(myGetVersionLongCmd);
+		add( startCmd );
+		add( stopCmd );
+		add( new RestartSutCommand( myConfig, startCmd, stopCmd, this ) );
+		add( myGetVersionCmd );
+		add( myGetVersionLongCmd );
 	}
 	
-	public String getName()
-	{
-		Trace.println( Trace.EXEC );
-		return myConfig.getName();
-	}
-
-	public ArrayList<SutIfCommand> getCommands()
-	{
-		Trace.println( Trace.GETTER );
-		return myCommands;
-	}
+//	public String getName()
+//	{
+//		Trace.println( Trace.GETTER );
+//		return myConfig.getName();
+//	}
 
 	public SutInfo getSutInfo( File aLogDir, RunTimeData aParentRtData )
 	{
 		Trace.println( Trace.EXEC );
 		
+		// TODO Revise this function. What to do with it?
+		// Should GetVersionSutCommand and GetVersionLongSutCommand even be a command?
 		RunTimeData runtimeData = new RunTimeData( aParentRtData );
-		RunTimeVariable versionVar = new RunTimeVariable( GetVersionSutCommand.myVersionParameter, String.class );
-		RunTimeVariable versionLogVar = new RunTimeVariable( GetVersionSutCommand.myVersionLogParameter, File.class );
+		RunTimeVariable versionVar = new RunTimeVariable( GetVersionSutCommand.VERSION_PARAMETER, String.class );
+		RunTimeVariable versionLogVar = new RunTimeVariable( GetVersionSutCommand.VERSION_LOG_PARAMETER, File.class );
 		RunTimeVariable versionLongLogVar = new RunTimeVariable( GetVersionLongSutCommand.myVersionLogParameter, File.class );
 		runtimeData.add(versionVar);
 		runtimeData.add(versionLogVar);
 		runtimeData.add(versionLongLogVar);
-		SutInfo sut = new SutInfo( this.getName() );
+		SutInfo sut = new SutInfo( this.getSutName() );
 
-		if ( myGetVersionCmd.doAction(runtimeData, aLogDir) )
+		TestStepCommand sutInfoStep = new TestStepCommand( StepType.check,
+		                                                0,
+		                                                "Get the Version of the Sut",
+		                                                "GetVersionSut",
+		                                                this,
+		                                                new ParameterArrayList() );
+		TestStepResult sutInfoResult;
+		try
 		{
-			String[] versions = getVersions( (String) versionVar.getValue() );
-			sut.setVersion(versions[0], versions[1], versions[2]);
-
-			if ( myGetVersionLongCmd.doAction(runtimeData, aLogDir) )
+			sutInfoResult = myGetVersionCmd.execute(sutInfoStep, runtimeData, aLogDir);
+			if ( sutInfoResult.getResult().equals(VERDICT.PASSED) )
 			{
-				File versionLog = (File) versionLongLogVar.getValue();
-				if ( versionLog != null )
+				String[] versions = getVersions( (String) versionVar.getValue() );
+				sut.setVersion(versions[0], versions[1], versions[2]);
+	
+				TestStepResult sutInfoLongResult = myGetVersionLongCmd.execute(sutInfoStep, runtimeData, aLogDir);
+				if ( sutInfoLongResult.getResult().equals(VERDICT.PASSED) )
 				{
-					sut.addSutLog("version", versionLog.getAbsolutePath());
+					File versionLog = (File) versionLongLogVar.getValue();
+					if ( versionLog != null )
+					{
+						sut.addSutLog("version", versionLog.getAbsolutePath());
+					}
 				}
 			}
+		}
+		catch (TestSuiteException e)
+		{
+			sutInfoResult = new TestStepResult( sutInfoStep );
+			sutInfoResult.setResult(VERDICT.FAILED);
 		}
 
 		return sut;
@@ -251,5 +267,19 @@ public class StandardSutControl extends SutControl
 			Trace.print(Trace.UTIL, e);
 		}
 		return versions;
+	}
+
+	@Override
+	public String getSutName()
+	{
+		Trace.println(Trace.GETTER);
+		return myConfig.getName();
+	}
+
+	@Override
+	public Parameter createParameter(String aName, String aType, String aValue)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

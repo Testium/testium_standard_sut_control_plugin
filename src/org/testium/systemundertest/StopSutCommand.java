@@ -5,9 +5,14 @@ package org.testium.systemundertest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 import org.testium.configuration.SutControlConfiguration;
+import org.testium.executor.TestStepCommandExecutor;
+import org.testtoolinterfaces.testresult.TestStepResult;
+import org.testtoolinterfaces.testresult.TestResult.VERDICT;
+import org.testtoolinterfaces.testsuite.ParameterArrayList;
+import org.testtoolinterfaces.testsuite.TestSuiteException;
+import org.testtoolinterfaces.testsuite.TestStepSimple;
 import org.testtoolinterfaces.utils.RunTimeData;
 import org.testtoolinterfaces.utils.Trace;
 
@@ -17,7 +22,7 @@ import org.testtoolinterfaces.utils.Trace;
  *
  * Simple class for stopping the System Under Test.
  */
-public final class StopSutCommand implements SutIfCommand
+public final class StopSutCommand implements TestStepCommandExecutor
 {
 	private static final String myAction = "stop";
 	private SutControlConfiguration myConfig;
@@ -29,12 +34,6 @@ public final class StopSutCommand implements SutIfCommand
 	{
 		Trace.println( Trace.CONSTRUCTOR );
 		myConfig = aConfig;
-	}
-
-	public String getName()
-	{
-		Trace.println( Trace.GETTER );
-		return myAction;
 	}
 
 	/* (non-Javadoc)
@@ -59,15 +58,47 @@ public final class StopSutCommand implements SutIfCommand
     	return true;
 	}
 
-	public boolean verifyParameters(RunTimeData aVariables)
+	@Override
+	public TestStepResult execute( TestStepSimple aStep,
+	                               RunTimeData aVariables,
+	                               File aLogDir ) throws TestSuiteException
 	{
-		Trace.println( Trace.EXEC_PLUS );
-		return true;
+		Trace.println( Trace.EXEC );
+		TestStepResult result = new TestStepResult( aStep );
+
+		File command = myConfig.getCommand();
+		String cmdParam = myConfig.getStopParameter();
+		cmdParam += " " + myConfig.getSettingsParameter();
+
+		File runLog = new File( aLogDir, "sutStop.log" );
+		result.addTestLog("sutStart", "sutStop.log");
+		
+		try
+		{
+			StandardSutControl.execute(command, cmdParam, runLog);
+			result.setResult(VERDICT.PASSED);
+		}
+		catch (FileNotFoundException exc)
+		{
+        	Trace.print(Trace.UTIL, exc );
+    		result.setResult(VERDICT.FAILED);
+    		result.setComment(exc.getMessage());
+		}
+
+		return result;
 	}
 
-	public ArrayList<Parameter> getParameters()
+	@Override
+	public String getCommand()
 	{
 		Trace.println( Trace.GETTER );
-		return new ArrayList<Parameter>();
+		return myAction;
+	}
+
+	@Override
+	public boolean verifyParameters( ParameterArrayList aParameters ) throws TestSuiteException
+	{
+		Trace.println( Trace.EXEC_PLUS );
+		return true;	
 	}
 }

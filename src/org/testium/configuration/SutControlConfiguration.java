@@ -45,7 +45,7 @@ public class SutControlConfiguration
 	                                String aLongVersionParameter,
 	                                String aSettingsParameter )
 	{
-	    Trace.println( Trace.LEVEL.CONSTRUCTOR,
+	    Trace.println( Trace.CONSTRUCTOR,
 	                   "SutControlConfiguration( "
                   			+ aName != null ? aName + ", " : ""
                    			+ aCommand != null ? aCommand.getName() + ", " : ""

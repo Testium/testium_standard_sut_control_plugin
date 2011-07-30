@@ -37,7 +37,7 @@ public class SutControlConfigurationXmlHandler extends XmlHandler
 	public SutControlConfigurationXmlHandler(XMLReader anXmlReader, RunTimeData anRtData)
 	{
 	    super(anXmlReader, START_ELEMENT);
-	    Trace.println(Trace.LEVEL.CONSTRUCTOR);
+	    Trace.println(Trace.CONSTRUCTOR);
 
 		myRunTimeData = anRtData;
 

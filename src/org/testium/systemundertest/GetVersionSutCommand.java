@@ -10,7 +10,13 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import org.testium.configuration.SutControlConfiguration;
-import org.testium.systemundertest.Parameter.DIRECTION;
+import org.testium.executor.TestStepCommandExecutor;
+import org.testtoolinterfaces.testresult.TestStepResult;
+import org.testtoolinterfaces.testresult.TestResult.VERDICT;
+import org.testtoolinterfaces.testsuite.Parameter;
+import org.testtoolinterfaces.testsuite.ParameterArrayList;
+import org.testtoolinterfaces.testsuite.TestSuiteException;
+import org.testtoolinterfaces.testsuite.TestStepSimple;
 import org.testtoolinterfaces.utils.RunTimeData;
 import org.testtoolinterfaces.utils.RunTimeVariable;
 import org.testtoolinterfaces.utils.Trace;
@@ -21,11 +27,12 @@ import org.testtoolinterfaces.utils.Trace;
  *
  * Simple class for starting the System Under Test.
  */
-public final class GetVersionSutCommand implements SutIfCommand
+public final class GetVersionSutCommand implements TestStepCommandExecutor
 {
-	private static final String myAction = "getVersion";
-	public static final String myVersionParameter = "version";
-	public static final String myVersionLogParameter = "versionLog";
+	private static final String ACTION = "getVersion";
+	public static final String VERSION_PARAMETER = "version";
+	public static final String VERSION_LOG_PARAMETER = "versionLog";
+
 	private SutControlConfiguration myConfig;
 
 	/**
@@ -39,39 +46,66 @@ public final class GetVersionSutCommand implements SutIfCommand
 		myConfig = aConfig;
 	}
 
-	public String getName()
+	public ArrayList<Parameter> getParameters()
 	{
 		Trace.println( Trace.GETTER );
-		return myAction;
+		ArrayList<Parameter> params = new ArrayList<Parameter>();
+		Parameter versionOutParameter = new Parameter(VERSION_PARAMETER, String.class );
+		Parameter versionLogParameter = new Parameter(VERSION_LOG_PARAMETER, File.class );
+		params.add( versionOutParameter );
+		params.add( versionLogParameter );
+
+		return params;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.TestToolInterfaces.systemUnderTest.AbstractSingleSutAction#doAction()
-	 */
-	public boolean doAction(RunTimeData aRtData, File aLogDir)
+	@Override
+	public TestStepResult execute( TestStepSimple aStep,
+	                               RunTimeData aVariables,
+	                               File aLogDir ) throws TestSuiteException
 	{
-		Trace.println( Trace.EXEC, "doAction( " + aLogDir.getName() + " )", true );
+		Trace.println( Trace.EXEC, "execute( " + aStep.getId() + ", "
+		               						   + aLogDir.getName() + " )", true );
 
-		if ( ! this.verifyParameters(aRtData) ) { return false; }
+		// verifyParameters( aStep.getParameters() ); // Not needed
 
-		String commandName = aRtData.substituteVars( myConfig.getCommand().getPath() );
+		// TODO is this correct? Why not directly using the constants?
+		ArrayList<Parameter> params = getParameters();
+		for (Parameter param : params)
+		{
+			RunTimeVariable var = aVariables.get( param.getName() );
+			if ( var == null ||
+				 var.getType() != param.getValueType() )
+			{
+				throw new TestSuiteException( param.getName()
+				                              + " is not set or is not of type "
+				                              + param.getValueType().getName(),
+				                              aStep );
+			}
+		}
+		
+		TestStepResult result = new TestStepResult( aStep );
+
+		String commandName = aVariables.substituteVars( myConfig.getCommand().getPath() );
 		File command = new File( commandName );
 
 		String cmdParamTmp = myConfig.getVersionParameter();
 		cmdParamTmp += " " + myConfig.getSettingsParameter();
-		String cmdParam = aRtData.substituteVars( cmdParamTmp );
+		String cmdParam = aVariables.substituteVars( cmdParamTmp );
 
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		File versionLog = new File( aLogDir, "sutVersion.log" );
+		result.addTestLog("sutVersion", "sutVersion.log");
 		
 		try
 		{
-			StandardSutControl.execute( command, cmdParam, output, versionLog);
+			StandardSutControl.execute( command, cmdParam, output, versionLog );
+			result.setResult(VERDICT.PASSED);
 		}
 		catch (Exception exc)
 		{
         	Trace.print(Trace.EXEC_PLUS, exc );
-			return false;
+    		result.setResult(VERDICT.FAILED);
+    		result.setComment(exc.getMessage());
 		}
 
 		PrintWriter pw;
@@ -86,36 +120,25 @@ public final class GetVersionSutCommand implements SutIfCommand
         	Trace.print(Trace.UTIL, exc );
 		}
 
-		RunTimeVariable versionVar = aRtData.get( myVersionParameter );
+		RunTimeVariable versionVar = aVariables.get( VERSION_PARAMETER );
 		versionVar.setValue( output.toString() );
-		RunTimeVariable logVar = aRtData.get( myVersionLogParameter );
+		RunTimeVariable logVar = aVariables.get( VERSION_LOG_PARAMETER );
 		logVar.setValue( versionLog );
-        return true;
+
+		return result;
 	}
 
-	public boolean verifyParameters(RunTimeData aVariables)
-	{
-		Trace.println( Trace.EXEC_PLUS );
-		ArrayList<Parameter> params = getParameters();
-		
-		for (Parameter param : params)
-		{
-			RunTimeVariable var = aVariables.get( param.getName() );
-			if ( var == null ) { return false; }
-			if ( var.getType() != param.getType() ) { return false; }
-		}
-		return true;
-	}
-
-	public ArrayList<Parameter> getParameters()
+	@Override
+	public String getCommand()
 	{
 		Trace.println( Trace.GETTER );
-		ArrayList<Parameter> params = new ArrayList<Parameter>();
-		Parameter versionOutParameter = new Parameter(myVersionParameter, DIRECTION.OUT, String.class );
-		Parameter versionLogParameter = new Parameter(myVersionLogParameter, DIRECTION.OUT, File.class );
-		params.add( versionOutParameter );
-		params.add( versionLogParameter );
+		return ACTION;
+	}
 
-		return params;
+	@Override
+	public boolean verifyParameters( ParameterArrayList aParameters ) throws TestSuiteException
+	{
+		Trace.println( Trace.EXEC_PLUS );
+		return true;
 	}
 }

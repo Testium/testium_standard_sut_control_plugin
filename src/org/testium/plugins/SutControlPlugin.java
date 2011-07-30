@@ -29,7 +29,7 @@ public final class SutControlPlugin implements Plugin
 	public SutControlPlugin()
 	{
 		super();
-		Trace.println(Trace.LEVEL.CONSTRUCTOR);
+		Trace.println(Trace.CONSTRUCTOR);
 	}
 
 	@Override

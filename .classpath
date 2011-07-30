@@ -7,5 +7,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/TestResult"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Testium"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/TestSuite"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

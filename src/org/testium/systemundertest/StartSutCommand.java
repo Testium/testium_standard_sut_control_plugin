@@ -5,9 +5,14 @@ package org.testium.systemundertest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 import org.testium.configuration.SutControlConfiguration;
+import org.testium.executor.TestStepCommandExecutor;
+import org.testtoolinterfaces.testresult.TestStepResult;
+import org.testtoolinterfaces.testresult.TestResult.VERDICT;
+import org.testtoolinterfaces.testsuite.ParameterArrayList;
+import org.testtoolinterfaces.testsuite.TestSuiteException;
+import org.testtoolinterfaces.testsuite.TestStepSimple;
 import org.testtoolinterfaces.utils.RunTimeData;
 import org.testtoolinterfaces.utils.Trace;
 
@@ -17,7 +22,7 @@ import org.testtoolinterfaces.utils.Trace;
  *
  * Simple class for starting the System Under Test.
  */
-public final class StartSutCommand implements SutIfCommand
+public final class StartSutCommand implements TestStepCommandExecutor
 {
 	private static final String myAction = "start";
 	private SutControlConfiguration myConfig;
@@ -31,43 +36,47 @@ public final class StartSutCommand implements SutIfCommand
 		myConfig = aConfig;
 	}
 
-	public String getName()
+	@Override
+	public TestStepResult execute( TestStepSimple aStep,
+	                               RunTimeData aVariables,
+	                               File aLogDir ) throws TestSuiteException
+	{
+		Trace.println( Trace.EXEC );
+		TestStepResult result = new TestStepResult( aStep );
+
+		File command = myConfig.getCommand();
+		String cmdParam = myConfig.getStartParameter();
+		cmdParam += " " + myConfig.getSettingsParameter();
+
+		File runLog = new File( aLogDir, "sutStart.log" );
+		result.addTestLog("sutStart", "sutStart.log");
+		
+		try
+		{
+			StandardSutControl.execute(command, cmdParam, runLog);
+			result.setResult(VERDICT.PASSED);
+		}
+		catch (FileNotFoundException exc)
+		{
+        	Trace.print(Trace.UTIL, exc );
+    		result.setResult(VERDICT.FAILED);
+    		result.setComment(exc.getMessage());
+		}
+
+		return result;
+	}
+
+	@Override
+	public String getCommand()
 	{
 		Trace.println( Trace.GETTER );
 		return myAction;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.TestToolInterfaces.systemUnderTest.AbstractSingleSutAction#doAction()
-	 */
-	public boolean doAction(RunTimeData aVariables, File aLogDir)
-	{
-		Trace.println( Trace.EXEC );
-		File command = myConfig.getCommand();
-		String cmdParam = myConfig.getStartParameter();
-		cmdParam += " " + myConfig.getSettingsParameter();
-		File runLog = new File( aLogDir, "sutStart.log" );
-		try
-		{
-			StandardSutControl.execute(command, cmdParam, runLog);
-		}
-		catch (FileNotFoundException exc)
-		{
-        	Trace.print(Trace.UTIL, exc );
-        	return false;
-		}
-    	return true;
-	}
-
-	public boolean verifyParameters(RunTimeData aVariables)
+	@Override
+	public boolean verifyParameters( ParameterArrayList aParameters ) throws TestSuiteException
 	{
 		Trace.println( Trace.EXEC_PLUS );
-		return true;
-	}
-
-	public ArrayList<Parameter> getParameters()
-	{
-		Trace.println( Trace.GETTER );
-		return new ArrayList<Parameter>();
+		return true;	
 	}
 }
