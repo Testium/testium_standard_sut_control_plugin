@@ -13,7 +13,7 @@ import org.testium.configuration.SutControlConfiguration;
 import org.testium.executor.TestStepCommandExecutor;
 import org.testtoolinterfaces.testresult.TestStepResult;
 import org.testtoolinterfaces.testresult.TestResult.VERDICT;
-import org.testtoolinterfaces.testsuite.Parameter;
+import org.testtoolinterfaces.testsuite.ParameterImpl;
 import org.testtoolinterfaces.testsuite.ParameterArrayList;
 import org.testtoolinterfaces.testsuite.TestSuiteException;
 import org.testtoolinterfaces.testsuite.TestStepSimple;
@@ -44,11 +44,11 @@ public final class GetVersionLongSutCommand implements TestStepCommandExecutor
 		myConfig = aConfig;
 	}
 
-	public ArrayList<Parameter> getParameters()
+	public ArrayList<ParameterImpl> getParameters()
 	{
 		Trace.println( Trace.GETTER );
-		ArrayList<Parameter> params = new ArrayList<Parameter>();
-		Parameter versionLongLogParameter = new Parameter(myVersionLogParameter, File.class );
+		ArrayList<ParameterImpl> params = new ArrayList<ParameterImpl>();
+		ParameterImpl versionLongLogParameter = new ParameterImpl(myVersionLogParameter, File.class );
 		params.add( versionLongLogParameter );
 
 		return params;
@@ -65,8 +65,8 @@ public final class GetVersionLongSutCommand implements TestStepCommandExecutor
 		// verifyParameters( aStep.getParameters() ); // Not needed
 
 		// TODO is this correct? Why not directly using the constants?
-		ArrayList<Parameter> params = getParameters();
-		for (Parameter param : params)
+		ArrayList<ParameterImpl> params = getParameters();
+		for (ParameterImpl param : params)
 		{
 			RunTimeVariable var = aVariables.get( param.getName() );
 			if ( var == null ||

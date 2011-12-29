@@ -10,7 +10,7 @@ import org.testium.configuration.SutControlConfiguration;
 import org.testtoolinterfaces.testresult.SutInfo;
 import org.testtoolinterfaces.testresult.TestStepResult;
 import org.testtoolinterfaces.testresult.TestResult.VERDICT;
-import org.testtoolinterfaces.testsuite.Parameter;
+import org.testtoolinterfaces.testsuite.ParameterImpl;
 import org.testtoolinterfaces.testsuite.ParameterArrayList;
 import org.testtoolinterfaces.testsuite.TestSuiteException;
 import org.testtoolinterfaces.testsuite.TestStepCommand;
@@ -277,7 +277,7 @@ public class StandardSutControl extends SutControl
 	}
 
 	@Override
-	public Parameter createParameter(String aName, String aType, String aValue)
+	public ParameterImpl createParameter(String aName, String aType, String aValue)
 	{
 		// TODO Auto-generated method stub
 		return null;
