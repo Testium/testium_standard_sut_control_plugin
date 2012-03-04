@@ -44,8 +44,7 @@ public class SutControlParametersConfigurationXmlHandler extends XmlHandler
 
 	    for (XmlHandler handler : xmlHandlers)
 	    {
-			this.addStartElementHandler(handler.getStartElement(), handler);
-			handler.addEndElementHandler(handler.getStartElement(), this);
+			this.addElementHandler(handler.getStartElement(), handler);
 	    }
 	}
 
@@ -85,34 +84,40 @@ public class SutControlParametersConfigurationXmlHandler extends XmlHandler
 	    Trace.println(Trace.UTIL, "handleReturnFromChildElement( " + 
 	    	      aQualifiedName + " )", true);
 	    
+	    if ( ! aChildXmlHandler.getClass().equals(GenericTagAndStringXmlHandler.class) )
+		{
+			throw new Error( "ChildXmlHandler (" + aChildXmlHandler.getClass().toString() + ") must be of type GenericTagAndStringXmlHandler" );
+		}
+		GenericTagAndStringXmlHandler childXmlHandler = (GenericTagAndStringXmlHandler) aChildXmlHandler;
+
 		if (aQualifiedName.equalsIgnoreCase(CFG_START))
     	{
-			myStartParam = aChildXmlHandler.getValue();
+			myStartParam = childXmlHandler.getValue();
 			aChildXmlHandler.reset();
     	}
 		else if (aQualifiedName.equalsIgnoreCase(CFG_STOP))
     	{
-			myStopParam = aChildXmlHandler.getValue();
+			myStopParam = childXmlHandler.getValue();
 			aChildXmlHandler.reset();
     	}
 		else if (aQualifiedName.equalsIgnoreCase(CFG_RESTART))
     	{
-			myRestartParam = aChildXmlHandler.getValue();
+			myRestartParam = childXmlHandler.getValue();
 			aChildXmlHandler.reset();
     	}
 		else if (aQualifiedName.equalsIgnoreCase(CFG_VERSION))
     	{
-			myVersionParam = aChildXmlHandler.getValue();
+			myVersionParam = childXmlHandler.getValue();
 			aChildXmlHandler.reset();
     	}
 		else if (aQualifiedName.equalsIgnoreCase(CFG_LONGVERSION))
     	{
-			myLongVersionParam = aChildXmlHandler.getValue();
+			myLongVersionParam = childXmlHandler.getValue();
 			aChildXmlHandler.reset();
     	}
 		else if (aQualifiedName.equalsIgnoreCase(CFG_SETTINGS))
     	{
-			mySettingsParam = aChildXmlHandler.getValue();
+			mySettingsParam = childXmlHandler.getValue();
 			aChildXmlHandler.reset();
     	}
 	}

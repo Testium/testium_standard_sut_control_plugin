@@ -14,7 +14,6 @@ import org.testtoolinterfaces.testsuite.ParameterImpl;
 import org.testtoolinterfaces.testsuite.ParameterArrayList;
 import org.testtoolinterfaces.testsuite.TestSuiteException;
 import org.testtoolinterfaces.testsuite.TestStepCommand;
-import org.testtoolinterfaces.testsuite.TestStep.StepType;
 import org.testtoolinterfaces.utils.RunTimeData;
 import org.testtoolinterfaces.utils.RunTimeVariable;
 import org.testtoolinterfaces.utils.StreamGobbler;
@@ -73,8 +72,7 @@ public class StandardSutControl extends SutControl
 		runtimeData.add(versionLongLogVar);
 		SutInfo sut = new SutInfo( this.getSutName() );
 
-		TestStepCommand sutInfoStep = new TestStepCommand( StepType.check,
-		                                                0,
+		TestStepCommand sutInfoStep = new TestStepCommand( 0,
 		                                                "Get the Version of the Sut",
 		                                                "GetVersionSut",
 		                                                this,

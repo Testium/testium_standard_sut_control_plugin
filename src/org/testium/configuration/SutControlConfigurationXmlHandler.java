@@ -42,8 +42,7 @@ public class SutControlConfigurationXmlHandler extends XmlHandler
 		myRunTimeData = anRtData;
 
 		mySutControlParameterConfigurationXmlHandler = new SutControlParametersConfigurationXmlHandler(anXmlReader, anRtData);
-		this.addStartElementHandler(SutControlParametersConfigurationXmlHandler.START_ELEMENT, mySutControlParameterConfigurationXmlHandler);
-		mySutControlParameterConfigurationXmlHandler.addEndElementHandler(SutControlParametersConfigurationXmlHandler.START_ELEMENT, this);
+		this.addElementHandler(SutControlParametersConfigurationXmlHandler.START_ELEMENT, mySutControlParameterConfigurationXmlHandler);
 
 	    ArrayList<XmlHandler> xmlHandlers = new ArrayList<XmlHandler>();
 	    xmlHandlers.add(new GenericTagAndStringXmlHandler(anXmlReader, CFG_NAME));
@@ -52,8 +51,7 @@ public class SutControlConfigurationXmlHandler extends XmlHandler
 
 	    for (XmlHandler handler : xmlHandlers)
 	    {
-			this.addStartElementHandler(handler.getStartElement(), handler);
-			handler.addEndElementHandler(handler.getStartElement(), this);
+			this.addElementHandler(handler.getStartElement(), handler);
 	    }
 	}
 
@@ -93,17 +91,23 @@ public class SutControlConfigurationXmlHandler extends XmlHandler
 	    Trace.println(Trace.UTIL, "handleReturnFromChildElement( " + 
 	    	      aQualifiedName + " )", true);
 	    
+	    if ( ! aChildXmlHandler.getClass().equals(GenericTagAndStringXmlHandler.class) )
+		{
+			throw new Error( "ChildXmlHandler (" + aChildXmlHandler.getClass().toString() + ") must be of type GenericTagAndStringXmlHandler" );
+		}
+		GenericTagAndStringXmlHandler childXmlHandler = (GenericTagAndStringXmlHandler) aChildXmlHandler;
+
 		if (aQualifiedName.equalsIgnoreCase(CFG_NAME))
     	{
-			myTempName = aChildXmlHandler.getValue();
+			myTempName = childXmlHandler.getValue();
     	}
 		else if (aQualifiedName.equalsIgnoreCase(CFG_COMMAND))
     	{
-			myTempCommand = myRunTimeData.substituteVars( aChildXmlHandler.getValue() );
+			myTempCommand = myRunTimeData.substituteVars( childXmlHandler.getValue() );
     	}
 		else if (aQualifiedName.equalsIgnoreCase(CFG_VERSION_FORMAT))
     	{
-			myTempVersionFormat = aChildXmlHandler.getValue();
+			myTempVersionFormat = childXmlHandler.getValue();
     	}
 		else if (aQualifiedName.equalsIgnoreCase(SutControlParametersConfigurationXmlHandler.START_ELEMENT))
     	{
