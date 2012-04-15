@@ -91,23 +91,17 @@ public class SutControlConfigurationXmlHandler extends XmlHandler
 	    Trace.println(Trace.UTIL, "handleReturnFromChildElement( " + 
 	    	      aQualifiedName + " )", true);
 	    
-	    if ( ! aChildXmlHandler.getClass().equals(GenericTagAndStringXmlHandler.class) )
-		{
-			throw new Error( "ChildXmlHandler (" + aChildXmlHandler.getClass().toString() + ") must be of type GenericTagAndStringXmlHandler" );
-		}
-		GenericTagAndStringXmlHandler childXmlHandler = (GenericTagAndStringXmlHandler) aChildXmlHandler;
-
 		if (aQualifiedName.equalsIgnoreCase(CFG_NAME))
     	{
-			myTempName = childXmlHandler.getValue();
+			myTempName = ((GenericTagAndStringXmlHandler) aChildXmlHandler).getValue();
     	}
 		else if (aQualifiedName.equalsIgnoreCase(CFG_COMMAND))
     	{
-			myTempCommand = myRunTimeData.substituteVars( childXmlHandler.getValue() );
+			myTempCommand = myRunTimeData.substituteVars( ((GenericTagAndStringXmlHandler) aChildXmlHandler).getValue() );
     	}
 		else if (aQualifiedName.equalsIgnoreCase(CFG_VERSION_FORMAT))
     	{
-			myTempVersionFormat = childXmlHandler.getValue();
+			myTempVersionFormat = ((GenericTagAndStringXmlHandler) aChildXmlHandler).getValue();
     	}
 		else if (aQualifiedName.equalsIgnoreCase(SutControlParametersConfigurationXmlHandler.START_ELEMENT))
     	{
