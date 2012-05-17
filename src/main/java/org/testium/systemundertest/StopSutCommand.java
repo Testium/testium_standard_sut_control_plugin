@@ -58,7 +58,6 @@ public final class StopSutCommand implements TestStepCommandExecutor
     	return true;
 	}
 
-	@Override
 	public TestStepResult execute( TestStep aStep,
 	                               RunTimeData aVariables,
 	                               File aLogDir ) throws TestSuiteException
@@ -88,14 +87,12 @@ public final class StopSutCommand implements TestStepCommandExecutor
 		return result;
 	}
 
-	@Override
 	public String getCommand()
 	{
 		Trace.println( Trace.GETTER );
 		return myAction;
 	}
 
-	@Override
 	public boolean verifyParameters( ParameterArrayList aParameters ) throws TestSuiteException
 	{
 		Trace.println( Trace.EXEC_PLUS );

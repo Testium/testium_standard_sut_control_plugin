@@ -32,7 +32,6 @@ public final class SutControlPlugin implements Plugin
 		Trace.println(Trace.CONSTRUCTOR);
 	}
 
-	@Override
 	public void loadPlugIn(PluginCollection aPluginCollection,
 			RunTimeData anRtData) throws ConfigurationException
 	{

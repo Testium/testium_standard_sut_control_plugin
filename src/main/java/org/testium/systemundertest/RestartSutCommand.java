@@ -49,7 +49,6 @@ public final class RestartSutCommand implements TestStepCommandExecutor
 		mySutControl = aSutControl;
 	}
 
-	@Override
 	public TestStepResult execute( TestStep aStep,
 	                               RunTimeData aVariables,
 	                               File aLogDir ) throws TestSuiteException
@@ -100,14 +99,12 @@ public final class RestartSutCommand implements TestStepCommandExecutor
 		}
 	}
 
-	@Override
 	public String getCommand()
 	{
 		Trace.println( Trace.GETTER );
 		return myAction;
 	}
 
-	@Override
 	public boolean verifyParameters( ParameterArrayList aParameters ) throws TestSuiteException
 	{
 		Trace.println( Trace.EXEC_PLUS );
