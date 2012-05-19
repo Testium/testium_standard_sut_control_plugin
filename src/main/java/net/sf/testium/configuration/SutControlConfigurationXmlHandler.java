@@ -1,7 +1,6 @@
-package org.testium.configuration;
+package net.sf.testium.configuration;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import org.testtoolinterfaces.utils.GenericTagAndStringXmlHandler;
 import org.testtoolinterfaces.utils.RunTimeData;
@@ -42,17 +41,11 @@ public class SutControlConfigurationXmlHandler extends XmlHandler
 		myRunTimeData = anRtData;
 
 		mySutControlParameterConfigurationXmlHandler = new SutControlParametersConfigurationXmlHandler(anXmlReader, anRtData);
-		this.addElementHandler(SutControlParametersConfigurationXmlHandler.START_ELEMENT, mySutControlParameterConfigurationXmlHandler);
+		this.addElementHandler(mySutControlParameterConfigurationXmlHandler);
 
-	    ArrayList<XmlHandler> xmlHandlers = new ArrayList<XmlHandler>();
-	    xmlHandlers.add(new GenericTagAndStringXmlHandler(anXmlReader, CFG_NAME));
-	    xmlHandlers.add(new GenericTagAndStringXmlHandler(anXmlReader, CFG_COMMAND));
-	    xmlHandlers.add(new GenericTagAndStringXmlHandler(anXmlReader, CFG_VERSION_FORMAT));
-
-	    for (XmlHandler handler : xmlHandlers)
-	    {
-			this.addElementHandler(handler.getStartElement(), handler);
-	    }
+	    this.addElementHandler(new GenericTagAndStringXmlHandler(anXmlReader, CFG_NAME));
+	    this.addElementHandler(new GenericTagAndStringXmlHandler(anXmlReader, CFG_COMMAND));
+	    this.addElementHandler(new GenericTagAndStringXmlHandler(anXmlReader, CFG_VERSION_FORMAT));
 	}
 
 	@Override

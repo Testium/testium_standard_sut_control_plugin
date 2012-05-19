@@ -1,4 +1,4 @@
-package org.testium.configuration;
+package net.sf.testium.configuration;
 /**
  * 
  */

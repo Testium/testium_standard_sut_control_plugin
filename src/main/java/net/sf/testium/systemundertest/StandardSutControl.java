@@ -1,4 +1,4 @@
-package org.testium.systemundertest;
+package net.sf.testium.systemundertest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,7 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.testium.configuration.SutControlConfiguration;
+import net.sf.testium.configuration.SutControlConfiguration;
+
 import org.testtoolinterfaces.testresult.SutInfo;
 import org.testtoolinterfaces.testresult.TestStepResult;
 import org.testtoolinterfaces.testresult.TestResult.VERDICT;

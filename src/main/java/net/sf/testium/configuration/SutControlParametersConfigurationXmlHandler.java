@@ -1,6 +1,4 @@
-package org.testium.configuration;
-
-import java.util.ArrayList;
+package net.sf.testium.configuration;
 
 import org.testtoolinterfaces.utils.GenericTagAndStringXmlHandler;
 import org.testtoolinterfaces.utils.RunTimeData;
@@ -34,18 +32,12 @@ public class SutControlParametersConfigurationXmlHandler extends XmlHandler
 	    Trace.println(Trace.CONSTRUCTOR);
 	    reset();
 
-	    ArrayList<XmlHandler> xmlHandlers = new ArrayList<XmlHandler>();
-	    xmlHandlers.add(new GenericTagAndStringXmlHandler(anXmlReader, CFG_START));
-	    xmlHandlers.add(new GenericTagAndStringXmlHandler(anXmlReader, CFG_STOP));
-	    xmlHandlers.add(new GenericTagAndStringXmlHandler(anXmlReader, CFG_RESTART));
-	    xmlHandlers.add(new GenericTagAndStringXmlHandler(anXmlReader, CFG_VERSION));
-	    xmlHandlers.add(new GenericTagAndStringXmlHandler(anXmlReader, CFG_LONGVERSION));
-	    xmlHandlers.add(new GenericTagAndStringXmlHandler(anXmlReader, CFG_SETTINGS));
-
-	    for (XmlHandler handler : xmlHandlers)
-	    {
-			this.addElementHandler(handler.getStartElement(), handler);
-	    }
+	    this.addElementHandler(new GenericTagAndStringXmlHandler(anXmlReader, CFG_START));
+	    this.addElementHandler(new GenericTagAndStringXmlHandler(anXmlReader, CFG_STOP));
+	    this.addElementHandler(new GenericTagAndStringXmlHandler(anXmlReader, CFG_RESTART));
+	    this.addElementHandler(new GenericTagAndStringXmlHandler(anXmlReader, CFG_VERSION));
+	    this.addElementHandler(new GenericTagAndStringXmlHandler(anXmlReader, CFG_LONGVERSION));
+	    this.addElementHandler(new GenericTagAndStringXmlHandler(anXmlReader, CFG_SETTINGS));
 	}
 
 	@Override

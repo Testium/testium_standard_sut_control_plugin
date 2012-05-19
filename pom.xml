@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.testium</groupId>
+  <groupId>net.sf.testium</groupId>
   <artifactId>standard-sut-control-plugin</artifactId>
   <version>0.3.4-SNAPSHOT</version>
   <name>Testium Standard SUT Control Plugin</name>
   <description>Standard SUT Control Plugin for the Testium Executor</description>
-  <url>http://testium.sourceforge.net/</url>
+  <url>http://testium.sf.net/</url>
 
   <licenses>
     <license>
@@ -23,7 +23,7 @@
       <scope>test</scope>
   	</dependency>
   	<dependency>
-  	  <groupId>org.testium</groupId>
+  	  <groupId>net.sf.testium</groupId>
   	  <artifactId>testium</artifactId>
   	  <version>0.3.4-SNAPSHOT</version>
   	</dependency>

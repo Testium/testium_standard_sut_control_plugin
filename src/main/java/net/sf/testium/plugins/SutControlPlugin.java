@@ -1,4 +1,4 @@
-package org.testium.plugins;
+package net.sf.testium.plugins;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,13 +7,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.testium.Testium;
-import org.testium.configuration.ConfigurationException;
-import org.testium.configuration.SutControlConfiguration;
-import org.testium.configuration.SutControlConfigurationXmlHandler;
-import org.testium.plugins.Plugin;
-import org.testium.plugins.PluginCollection;
-import org.testium.systemundertest.StandardSutControl;
+import net.sf.testium.Testium;
+import net.sf.testium.configuration.ConfigurationException;
+import net.sf.testium.configuration.SutControlConfiguration;
+import net.sf.testium.configuration.SutControlConfigurationXmlHandler;
+import net.sf.testium.plugins.Plugin;
+import net.sf.testium.plugins.PluginCollection;
+import net.sf.testium.systemundertest.StandardSutControl;
 import org.testtoolinterfaces.utils.RunTimeData;
 import org.testtoolinterfaces.utils.Trace;
 import org.xml.sax.SAXException;

@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.testium.systemundertest;
+package net.sf.testium.systemundertest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import org.testium.configuration.SutControlConfiguration;
-import org.testium.executor.TestStepCommandExecutor;
+import net.sf.testium.configuration.SutControlConfiguration;
+import net.sf.testium.executor.TestStepCommandExecutor;
 import org.testtoolinterfaces.testresult.TestStepResult;
 import org.testtoolinterfaces.testresult.TestResult.VERDICT;
 import org.testtoolinterfaces.testsuite.ParameterArrayList;
@@ -64,7 +64,8 @@ public final class RestartSutCommand implements TestStepCommandExecutor
 			                                                "Stop",
 			                                                mySutControl,
 			                                                new ParameterArrayList() );
-			TestStepResult stopResult = myStopCommand.execute(stopStep, aVariables, aLogDir);
+//			TestStepResult stopResult = 
+					myStopCommand.execute(stopStep, aVariables, aLogDir);
 			
 			TestStepCommand startStep = new TestStepCommand( 0,
 			                                                "Start Command",

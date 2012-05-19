@@ -1,8 +1,9 @@
-package org.testium.systemundertest;
+package net.sf.testium.systemundertest;
 
 import java.io.File;
 
-import org.testium.configuration.SutControlConfiguration;
+import net.sf.testium.configuration.SutControlConfiguration;
+import net.sf.testium.systemundertest.StandardSutControl;
 
 public class StandardSutControlStub extends StandardSutControl
 {
