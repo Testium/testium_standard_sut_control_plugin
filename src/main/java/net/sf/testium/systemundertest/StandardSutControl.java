@@ -281,4 +281,9 @@ public class StandardSutControl extends SutControl
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public void destroy()
+	{
+		// NOP
+	}
 }
