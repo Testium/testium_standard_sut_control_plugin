@@ -62,7 +62,7 @@ public final class GetVersionSutCommand implements TestStepCommandExecutor
 	                               RunTimeData aVariables,
 	                               File aLogDir ) throws TestSuiteException
 	{
-		Trace.println( Trace.EXEC, "execute( " + aStep.getId() + ", "
+		Trace.println( Trace.EXEC, "execute( " + aStep.getDisplayName() + ", "
 		               						   + aLogDir.getName() + " )", true );
 
 		// verifyParameters( aStep.getParameters() ); // Not needed
