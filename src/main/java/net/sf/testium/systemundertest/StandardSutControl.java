@@ -9,12 +9,13 @@ import java.io.OutputStream;
 import net.sf.testium.configuration.SutControlConfiguration;
 
 import org.testtoolinterfaces.testresult.SutInfo;
-import org.testtoolinterfaces.testresult.TestStepResult;
 import org.testtoolinterfaces.testresult.TestResult.VERDICT;
-import org.testtoolinterfaces.testsuite.ParameterImpl;
+import org.testtoolinterfaces.testresult.TestStepResult;
+import org.testtoolinterfaces.testresult.impl.TestStepCommandResultImpl;
 import org.testtoolinterfaces.testsuite.ParameterArrayList;
-import org.testtoolinterfaces.testsuite.TestSuiteException;
+import org.testtoolinterfaces.testsuite.ParameterImpl;
 import org.testtoolinterfaces.testsuite.TestStepCommand;
+import org.testtoolinterfaces.testsuite.TestSuiteException;
 import org.testtoolinterfaces.utils.RunTimeData;
 import org.testtoolinterfaces.utils.RunTimeVariable;
 import org.testtoolinterfaces.utils.StreamGobbler;
@@ -100,7 +101,7 @@ public class StandardSutControl extends SutControl
 		}
 		catch (TestSuiteException e)
 		{
-			sutInfoResult = new TestStepResult( sutInfoStep );
+			sutInfoResult = new TestStepCommandResultImpl( sutInfoStep );
 			sutInfoResult.setResult(VERDICT.FAILED);
 		}
 

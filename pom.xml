@@ -46,8 +46,18 @@
   	<dependency>
   	  <groupId>net.sf.testium</groupId>
   	  <artifactId>testium</artifactId>
-  	  <version>0.3.22</version>
+  	  <version>0.3.28</version>
   	</dependency>
+    <dependency>
+        <groupId>org.testtoolinterfaces</groupId>
+        <artifactId>testsuite</artifactId>
+        <version>0.3.10</version>
+    </dependency>
+    <dependency>
+        <groupId>org.testtoolinterfaces</groupId>
+        <artifactId>testresult</artifactId>
+        <version>0.3.13</version>
+    </dependency>
   </dependencies>
 
   <build>

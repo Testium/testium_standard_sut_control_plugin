@@ -8,11 +8,13 @@ import java.io.FileNotFoundException;
 
 import net.sf.testium.configuration.SutControlConfiguration;
 import net.sf.testium.executor.TestStepCommandExecutor;
-import org.testtoolinterfaces.testresult.TestStepResult;
+
 import org.testtoolinterfaces.testresult.TestResult.VERDICT;
+import org.testtoolinterfaces.testresult.TestStepResult;
+import org.testtoolinterfaces.testresult.impl.TestStepCommandResultImpl;
 import org.testtoolinterfaces.testsuite.ParameterArrayList;
+import org.testtoolinterfaces.testsuite.TestStepCommand;
 import org.testtoolinterfaces.testsuite.TestSuiteException;
-import org.testtoolinterfaces.testsuite.TestStep;
 import org.testtoolinterfaces.utils.RunTimeData;
 import org.testtoolinterfaces.utils.Trace;
 
@@ -36,12 +38,12 @@ public final class StartSutCommand implements TestStepCommandExecutor
 		myConfig = aConfig;
 	}
 
-	public TestStepResult execute( TestStep aStep,
+	public TestStepResult execute( TestStepCommand aStep,
 	                               RunTimeData aVariables,
 	                               File aLogDir ) throws TestSuiteException
 	{
 		Trace.println( Trace.EXEC );
-		TestStepResult result = new TestStepResult( aStep );
+		TestStepResult result = new TestStepCommandResultImpl( aStep );
 
 		File command = myConfig.getCommand();
 		String cmdParam = myConfig.getStartParameter();
