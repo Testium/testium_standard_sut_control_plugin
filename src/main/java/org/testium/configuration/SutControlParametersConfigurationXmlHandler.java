@@ -1,4 +1,4 @@
-package net.sf.testium.configuration;
+package org.testium.configuration;
 
 import org.testtoolinterfaces.utils.GenericTagAndStringXmlHandler;
 import org.testtoolinterfaces.utils.RunTimeData;

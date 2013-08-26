@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.sf.testium.systemundertest;
+package org.testium.systemundertest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -9,10 +9,10 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import net.sf.testium.configuration.SutControlConfiguration;
 import net.sf.testium.executor.TestStepCommandExecutor;
 import net.sf.testium.executor.general.SpecifiedParameter;
 
+import org.testium.configuration.SutControlConfiguration;
 import org.testtoolinterfaces.testresult.TestResult.VERDICT;
 import org.testtoolinterfaces.testresult.TestStepResult;
 import org.testtoolinterfaces.testresult.impl.TestStepCommandResultImpl;
@@ -30,10 +30,12 @@ import org.testtoolinterfaces.utils.Trace;
  *
  * Simple class for starting the System Under Test.
  */
-public final class GetVersionLongSutCommand implements TestStepCommandExecutor
+public final class GetVersionSutCommand implements TestStepCommandExecutor
 {
-	private static final String myAction = "getLongVersion";
-	public static final String myVersionLogParameter = "versionLongLog";
+	private static final String ACTION = "getVersion";
+	public static final String VERSION_PARAMETER = "version";
+	public static final String VERSION_LOG_PARAMETER = "versionLog";
+
 	private SutControlConfiguration myConfig;
 
 	/**
@@ -41,7 +43,7 @@ public final class GetVersionLongSutCommand implements TestStepCommandExecutor
 	 * 
 	 * @param aConfig
 	 */
-	public GetVersionLongSutCommand( SutControlConfiguration aConfig )
+	public GetVersionSutCommand( SutControlConfiguration aConfig )
 	{
 		Trace.println( Trace.CONSTRUCTOR );
 		myConfig = aConfig;
@@ -51,8 +53,10 @@ public final class GetVersionLongSutCommand implements TestStepCommandExecutor
 	{
 		Trace.println( Trace.GETTER );
 		ArrayList<ParameterImpl> params = new ArrayList<ParameterImpl>();
-		ParameterImpl versionLongLogParameter = new ParameterImpl(myVersionLogParameter, File.class );
-		params.add( versionLongLogParameter );
+		ParameterImpl versionOutParameter = new ParameterImpl(VERSION_PARAMETER, String.class );
+		ParameterImpl versionLogParameter = new ParameterImpl(VERSION_LOG_PARAMETER, File.class );
+		params.add( versionOutParameter );
+		params.add( versionLogParameter );
 
 		return params;
 	}
@@ -62,8 +66,8 @@ public final class GetVersionLongSutCommand implements TestStepCommandExecutor
 	                               File aLogDir ) throws TestSuiteException
 	{
 		Trace.println( Trace.EXEC, "execute( " + aStep.getDisplayName() + ", "
-		               						   + "aVariables, "
 		               						   + aLogDir.getName() + " )", true );
+
 		// verifyParameters( aStep.getParameters() ); // Not needed
 
 		// TODO is this correct? Why not directly using the constants?
@@ -80,25 +84,28 @@ public final class GetVersionLongSutCommand implements TestStepCommandExecutor
 				                              aStep );
 			}
 		}
-
+		
 		TestStepResult result = new TestStepCommandResultImpl( aStep );
 
-		File command = myConfig.getCommand();
-		String cmdParam = myConfig.getLongVersionParameter();
-		cmdParam += " " + myConfig.getSettingsParameter();
+		String commandName = aVariables.substituteVars( myConfig.getCommand().getPath() );
+		File command = new File( commandName );
+
+		String cmdParamTmp = myConfig.getVersionParameter();
+		cmdParamTmp += " " + myConfig.getSettingsParameter();
+		String cmdParam = aVariables.substituteVars( cmdParamTmp );
 
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		File runLog = new File( aLogDir, "sutVersionLong.log" );
-		result.addTestLog("sutVersionLong", "sutVersionLong.log");
+		File versionLog = new File( aLogDir, "sutVersion.log" );
+		result.addTestLog("sutVersion", "sutVersion.log");
 		
 		try
 		{
-			StandardSutControl.execute( command, cmdParam, output, runLog );
+			StandardSutControl.execute( command, cmdParam, output, versionLog );
 			result.setResult(VERDICT.PASSED);
 		}
 		catch (Exception exc)
 		{
-        	Trace.print(Trace.UTIL, exc );
+        	Trace.print(Trace.EXEC_PLUS, exc );
     		result.setResult(VERDICT.FAILED);
     		result.setComment(exc.getMessage());
 		}
@@ -106,25 +113,27 @@ public final class GetVersionLongSutCommand implements TestStepCommandExecutor
 		PrintWriter pw;
 		try
 		{
-			pw = new PrintWriter(runLog);
+			pw = new PrintWriter(versionLog);
 			pw.println(output.toString());
 	        pw.flush();
-	        pw.close();
 		}
 		catch (FileNotFoundException exc)
 		{
         	Trace.print(Trace.UTIL, exc );
 		}
 
-		RunTimeVariable logVar = aVariables.get( myVersionLogParameter );
-		logVar.setValue( runLog );
-        return result;
+		RunTimeVariable versionVar = aVariables.get( VERSION_PARAMETER );
+		versionVar.setValue( output.toString() );
+		RunTimeVariable logVar = aVariables.get( VERSION_LOG_PARAMETER );
+		logVar.setValue( versionLog );
+
+		return result;
 	}
 
 	public String getCommand()
 	{
 		Trace.println( Trace.GETTER );
-		return myAction;
+		return ACTION;
 	}
 
 	public boolean verifyParameters( ParameterArrayList aParameters ) throws TestSuiteException
@@ -134,7 +143,7 @@ public final class GetVersionLongSutCommand implements TestStepCommandExecutor
 	}
 
 	public String getDescription() {
-		return "Retrieves the version (long format) of the System Under Test. 'Long' can mean any output and will be written to file.";
+		return "Retrieves the version of the System Under Test in a single string format.";
 	}
 
 	public ArrayList<SpecifiedParameter> getParameterSpecs() {

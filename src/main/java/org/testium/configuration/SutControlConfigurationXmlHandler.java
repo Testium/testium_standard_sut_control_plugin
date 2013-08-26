@@ -1,6 +1,8 @@
-package net.sf.testium.configuration;
+package org.testium.configuration;
 
 import java.io.File;
+
+import net.sf.testium.configuration.ConfigurationException;
 
 import org.testtoolinterfaces.utils.GenericTagAndStringXmlHandler;
 import org.testtoolinterfaces.utils.RunTimeData;

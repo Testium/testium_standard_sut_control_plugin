@@ -1,8 +1,10 @@
-package net.sf.testium.systemundertest;
+package org.testium.systemundertest;
 
 import java.io.File;
 
 import junit.framework.Assert;
+
+import net.sf.testium.systemundertest.SutControl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +22,7 @@ public class StandardSutControlTester extends junit.framework.TestCase
 	}
 
 	/**
-	 * Test method for {@link net.sf.testium.systemundertest.StandardSutControl#getSutInfo()}.
+	 * Test method for {@link org.testium.systemundertest.StandardSutControl#getSutInfo()}.
 	 * Test Normal Version, as intended
 	 */
 	@Test
@@ -35,7 +37,7 @@ public class StandardSutControlTester extends junit.framework.TestCase
 	}
 
 	/**
-	 * Test method for {@link net.sf.testium.systemundertest.StandardSutControl#getSutInfo()}.
+	 * Test method for {@link org.testium.systemundertest.StandardSutControl#getSutInfo()}.
 	 * Test Normal Version without any string trailing the patch
 	 */
 	@Test
@@ -50,7 +52,7 @@ public class StandardSutControlTester extends junit.framework.TestCase
 	}
 
 	/**
-	 * Test method for {@link net.sf.testium.systemundertest.StandardSutControl#getSutInfo()}.
+	 * Test method for {@link org.testium.systemundertest.StandardSutControl#getSutInfo()}.
 	 * Test Normal Version without any string before the main-level
 	 */
 	@Test
@@ -65,7 +67,7 @@ public class StandardSutControlTester extends junit.framework.TestCase
 	}
 
 	/**
-	 * Test method for {@link net.sf.testium.systemundertest.StandardSutControl#getSutInfo()}.
+	 * Test method for {@link org.testium.systemundertest.StandardSutControl#getSutInfo()}.
 	 * Test Normal Version without any string before the main-level
 	 */
 	@Test
@@ -80,7 +82,7 @@ public class StandardSutControlTester extends junit.framework.TestCase
 	}
 
 	/**
-	 * Test method for {@link net.sf.testium.systemundertest.StandardSutControl#getSutInfo()}.
+	 * Test method for {@link org.testium.systemundertest.StandardSutControl#getSutInfo()}.
 	 * Test Normal Version without any string before the main-level
 	 */
 	@Test
@@ -95,7 +97,7 @@ public class StandardSutControlTester extends junit.framework.TestCase
 	}
 
 	/**
-	 * Test method for {@link net.sf.testium.systemundertest.StandardSutControl#getSutInfo()}.
+	 * Test method for {@link org.testium.systemundertest.StandardSutControl#getSutInfo()}.
 	 * Test Normal Version without any string before the main-level
 	 */
 	@Test
@@ -110,7 +112,7 @@ public class StandardSutControlTester extends junit.framework.TestCase
 	}
 
 	/**
-	 * Test method for {@link net.sf.testium.systemundertest.StandardSutControl#getSutInfo()}.
+	 * Test method for {@link org.testium.systemundertest.StandardSutControl#getSutInfo()}.
 	 * Test Normal Version without any string before the main-level
 	 */
 	@Test
@@ -125,7 +127,7 @@ public class StandardSutControlTester extends junit.framework.TestCase
 	}
 
 	/**
-	 * Test method for {@link net.sf.testium.systemundertest.StandardSutControl#getSutInfo()}.
+	 * Test method for {@link org.testium.systemundertest.StandardSutControl#getSutInfo()}.
 	 * Test Normal Version without any string before the main-level
 	 */
 	@Test
@@ -140,7 +142,7 @@ public class StandardSutControlTester extends junit.framework.TestCase
 	}
 
 	/**
-	 * Test method for {@link net.sf.testium.systemundertest.StandardSutControl#getSutInfo()}.
+	 * Test method for {@link org.testium.systemundertest.StandardSutControl#getSutInfo()}.
 	 * Test Normal Version without any string before the main-level
 	 */
 	@Test
@@ -155,7 +157,7 @@ public class StandardSutControlTester extends junit.framework.TestCase
 	}
 
 	/**
-	 * Test method for {@link net.sf.testium.systemundertest.StandardSutControl#getSutInfo()}.
+	 * Test method for {@link org.testium.systemundertest.StandardSutControl#getSutInfo()}.
 	 * Test Normal Version without any string before the main-level
 	 */
 	@Test
@@ -170,7 +172,7 @@ public class StandardSutControlTester extends junit.framework.TestCase
 	}
 
 	/**
-	 * Test method for {@link net.sf.testium.systemundertest.StandardSutControl#getSutInfo()}.
+	 * Test method for {@link org.testium.systemundertest.StandardSutControl#getSutInfo()}.
 	 * Test Normal Version without any string before the main-level
 	 */
 	@Test

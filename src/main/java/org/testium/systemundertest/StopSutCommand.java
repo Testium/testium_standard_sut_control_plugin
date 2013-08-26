@@ -1,16 +1,16 @@
 /**
  * 
  */
-package net.sf.testium.systemundertest;
+package org.testium.systemundertest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import net.sf.testium.configuration.SutControlConfiguration;
 import net.sf.testium.executor.TestStepCommandExecutor;
 import net.sf.testium.executor.general.SpecifiedParameter;
 
+import org.testium.configuration.SutControlConfiguration;
 import org.testtoolinterfaces.testresult.TestResult.VERDICT;
 import org.testtoolinterfaces.testresult.TestStepResult;
 import org.testtoolinterfaces.testresult.impl.TestStepCommandResultImpl;
