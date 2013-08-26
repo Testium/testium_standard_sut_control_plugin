@@ -5,7 +5,7 @@
   <version>0.3.7-SNAPSHOT</version>
   <name>Testium Standard SUT Control Plugin</name>
   <description>Standard SUT Control Plugin for the Testium Executor</description>
-  <url>http://testium.sf.net/</url>
+  <url>http://www.testium-base.org/plug-ins/standard-sut-control</url>
   <packaging>jar</packaging>
 
   <parent>
@@ -39,24 +39,24 @@
   <dependencies>
   	<dependency>
   	  <groupId>junit</groupId>
-  	  <artifactId>junit</artifactId>
-  	  <version>4.8.2</version>
-      <scope>test</scope>
+  	  <artifactId>junit-dep</artifactId>
+  	  <version>4.10</version>
+  	  <scope>test</scope>
   	</dependency>
   	<dependency>
   	  <groupId>net.sf.testium</groupId>
   	  <artifactId>testium</artifactId>
-  	  <version>0.3.28</version>
+  	  <version>0.3.37</version>
   	</dependency>
     <dependency>
         <groupId>org.testtoolinterfaces</groupId>
         <artifactId>testsuite</artifactId>
-        <version>0.3.10</version>
+        <version>0.3.11</version>
     </dependency>
     <dependency>
         <groupId>org.testtoolinterfaces</groupId>
         <artifactId>testresult</artifactId>
-        <version>0.3.13</version>
+        <version>0.3.14</version>
     </dependency>
   </dependencies>
 

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import net.sf.testium.configuration.SutControlConfiguration;
 import net.sf.testium.executor.TestStepCommandExecutor;
+import net.sf.testium.executor.general.SpecifiedParameter;
 
 import org.testtoolinterfaces.testresult.TestResult.VERDICT;
 import org.testtoolinterfaces.testresult.TestStepResult;
@@ -139,5 +140,13 @@ public final class GetVersionSutCommand implements TestStepCommandExecutor
 	{
 		Trace.println( Trace.EXEC_PLUS );
 		return true;
+	}
+
+	public String getDescription() {
+		return "Retrieves the version of the System Under Test in a single string format.";
+	}
+
+	public ArrayList<SpecifiedParameter> getParameterSpecs() {
+		return new ArrayList<SpecifiedParameter>();
 	}
 }
